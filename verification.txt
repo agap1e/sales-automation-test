@@ -1,0 +1,33 @@
+$ python aggregate_sales.py
+Строк: 13858; дубликатов: 60; delivered: 12047; cancelled: 1751; исправлено статусов: 35; отмен без количества: 4; групп: 631; выручка: 10276540.00 руб.
+Результат: daily_by_sku.csv
+
+
+$ python -m unittest discover -s tests -v
+test_bom_and_exact_decimal_arithmetic (test_aggregate_sales.AggregationTests.test_bom_and_exact_decimal_arithmetic) ... ok
+test_conflicting_order_id_is_rejected (test_aggregate_sales.AggregationTests.test_conflicting_order_id_is_rejected) ... ok
+test_duplicates_statuses_cancelled_missing_quantity_and_sorting (test_aggregate_sales.AggregationTests.test_duplicates_statuses_cancelled_missing_quantity_and_sorting) ... ok
+test_empty_file_and_wrong_headers_are_rejected (test_aggregate_sales.AggregationTests.test_empty_file_and_wrong_headers_are_rejected) ... ok
+test_header_only_creates_header_only_output (test_aggregate_sales.AggregationTests.test_header_only_creates_header_only_output) ... ok
+test_incorrect_field_count_is_rejected (test_aggregate_sales.AggregationTests.test_incorrect_field_count_is_rejected) ... ok
+test_input_cannot_be_overwritten (test_aggregate_sales.AggregationTests.test_input_cannot_be_overwritten) ... ok
+test_invalid_fields_are_rejected (test_aggregate_sales.AggregationTests.test_invalid_fields_are_rejected) ... ok
+test_invalid_input_preserves_existing_output (test_aggregate_sales.AggregationTests.test_invalid_input_preserves_existing_output) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.011s
+
+OK
+
+
+$ python verify_result.py
+OK: все 631 строк совпали с SQLite, включая порядок и выручку.
+Строк исходника: 13858; уникальных заказов: 13798; дубликатов: 60
+Статусы после дедупликации: {'cancelled': 1751, 'delivered': 12047}
+Выручка: 10276540 руб.
+Первая группа: ('UYT-0001', '2026-08-17', 28, 27650)
+Последняя группа: ('UYT-0012', '2026-10-07', 2, 980)
+
+
+Повторный запуск: CSV совпал побайтно.
+SHA256 daily_by_sku.csv: d94cac5ee77b17abd3506c9ec8ffa545425704a9200f5a5660a5befaf4f84562
